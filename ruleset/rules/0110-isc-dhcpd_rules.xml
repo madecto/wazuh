@@ -1,0 +1,111 @@
+<!--
+  -  ISC DHCPD - ipv4 DHCP rules
+  -  Author: Giulio Botto
+  -  Copyright (C) 2023, Giulio Botto
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of
+GPLv3.
+-->
+
+<!--DHCP
+Message Meaning
+  - Message mapped to following message types:
+  -   BOOTREQUEST
+  -   BOOTREPLY
+  -   DHCPDISCOVER
+  -   DHCPOFFER
+  -   DHCPREQUEST
+  -   DHCPDECLINE
+  -   DHCPACK
+  -   DHCPNAK
+  -   DHCPRELEASE
+  -   DHCPINFORM
+  -   DHCPLEASEQUERY
+  -   DHCPLEASEUNASSIGNED
+  -   DHCPLEASEUNKNOWN
+  -   DHCPLEASEACTIVE
+
+DHCPACK             A new IP address was leased to a client.
+DHCPREQUEST         A lease, lease renewal or lease extension was requested by a client.
+DHCPRELEASE         A lease was released by a client.
+DHCPDECLINE         An IP address was found to be in use on the network by the client.
+DHCPNACK            A lease was denied.
+DHCPLEASEUNASSIGNED The requested IP is managed by the server and is currently unassigned.
+DHCPLEASEUNKNOWN    The server dos not manage the requested IP address / client.
+DHCPLEASEACTIVE     The requested IP is managed by the server and there is an active lease.
+BOOTREPLY           A BOOTP address was leased to a client.
+-->
+
+<group name="dhcp,">
+    <rule id="100010" level="0">
+        <decoded_as>isc-dhcpd</decoded_as>
+        <description>Grouping for the ISC DHCPD rules.</description>
+    </rule>
+
+    <rule id="100011" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPACK</id>
+        <description>ISC DHCPD: A new IP address was leased to a client.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+    <rule id="100012" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPREQUEST</id>
+        <description>ISC DHCPD: A lease, lease renewal or lease extension was requested by a client.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+    <rule id="100013" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPRELEASE</id>
+        <description>ISC DHCPD: A lease was released by a client.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+    <rule id="100014" level="7">
+        <if_sid>100010</if_sid>
+        <id>^DHCPDECLINE</id>
+        <description>ISC DHCPD: An IP address was found to be in use on the network by the client.</description>
+        <group>
+            dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+    </rule>
+
+    <rule id="100015" level="7">
+        <if_sid>100010</if_sid>
+        <id>^DHCPNACK</id>
+        <description>ISC DHCPD: A lease was denied.</description>
+        <group>
+            dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+    </rule>
+
+    <rule id="100016" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPLEASEUNASSIGNED</id>
+        <description>ISC DHCPD: The requested IP is managed by the server and is currently
+            unassigned.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+    <rule id="100017" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPLEASEUNKNOWN</id>
+        <description>ISC DHCPD: The server dos not manage the requested IP address / client.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+    <rule id="100018" level="0">
+        <if_sid>100010</if_sid>
+        <id>^DHCPLEASEACTIVE</id>
+        <description>ISC DHCPD: The requested IP is managed by the server and there is an active
+            lease.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+
+
+    <rule id="100019" level="0">
+        <if_sid>100010</if_sid>
+        <id>^BOOTREPLY</id>
+        <description>ISC DHCPD: A BOOTP address was leased to a client.</description>
+        <group>dhcp_lease_action,</group>
+    </rule>
+</group>

@@ -1,0 +1,77 @@
+<!--
+  -  ISC dhcpd decoders
+  -  Author: Giulio Botto
+  -  Copyright (C) 2023
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of
+GPLv3.
+  -  References: https://datatracker.ietf.org/doc/html/rfc951
+  -              https://datatracker.ietf.org/doc/html/rfc1541
+  -              https://datatracker.ietf.org/doc/html/rfc4388
+-->
+
+<!--
+  - ID mapped to following message types:
+  -   BOOTREQUEST
+  -   BOOTREPLY
+  -   DHCPDISCOVER
+  -   DHCPOFFER
+  -   DHCPREQUEST
+  -   DHCPDECLINE
+  -   DHCPACK
+  -   DHCPNAK
+  -   DHCPRELEASE
+  -   DHCPINFORM
+  -   DHCPLEASEQUERY
+  -   DHCPLEASEUNASSIGNED
+  -   DHCPLEASEUNKNOWN
+  -   DHCPLEASEACTIVE
+  -
+  - Examples:
+  - Feb  7 15:48:23 asuncion dhcpd[66573]: BOOTREQUEST from 64:eb:8c:62:8c:24 via igb0.300
+  - Feb  7 15:48:23 asuncion dhcpd[66573]: BOOTREPLY on 192.168.175.169 to 64:eb:8c:62:8c:24 via
+igb0.300
+  - Feb 15 21:17:18 asuncion dhcpd[66573]: DHCPDISCOVER from 92:40:d0:1f:aa:bc (OPPO-Reno6-Pro-5G)
+via igb0.200
+  - Feb 15 21:17:18 asuncion dhcpd[66573]: DHCPOFFER on 192.168.1.106 to 92:40:d0:1f:aa:bc
+(OPPO-Reno6-Pro-5G) via igb0.200
+  - Feb 15 22:22:47 asuncion dhcpd[14872]: DHCPREQUEST for 192.168.1.148 from 68:e7:c2:ad:de:a1
+(Galaxy-J6) via igb0.300
+  - Feb 15 22:22:47 asuncion dhcpd[14872]: DHCPACK on 192.168.1.148 to 68:e7:c2:ad:de:a1 (Galaxy-J6)
+via igb0.300
+  - Feb 15 22:46:47 asuncion dhcpd[14872]: reuse_lease: lease age 20428 (secs) under 25% threshold,
+reply with unaltered, existing lease for 192.168.1.187
+-->
+
+<decoder name="isc-dhcpd">
+  <program_name>dhcpd</program_name>
+</decoder>
+
+<decoder name="isc-dhcpd-message">
+  <parent>isc-dhcpd</parent>
+  <regex type="pcre2">^(\p{Lu}+)\s+</regex>
+  <order>id</order>
+</decoder>
+
+<decoder name="isc-dhcpd-message">
+  <parent>isc-dhcpd</parent>
+  <regex type="pcre2">\s+(?:from|to)\s+(\S+)</regex>
+  <order>mac</order>
+</decoder>
+
+<decoder name="isc-dhcpd-message">
+  <parent>isc-dhcpd</parent>
+  <regex type="pcre2">\s+(?:on|for)\s+(\S+)</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="isc-dhcpd-message">
+  <parent>isc-dhcpd</parent>
+  <regex>\s+via\s+(\S+)</regex>
+  <order>interface</order>
+</decoder>
+
+<decoder name="isc-dhcpd-message">
+  <parent>isc-dhcpd</parent>
+  <regex>[A-Z]+:\s+.+\s+\((\S+)\)</regex>
+  <order>system_name</order>
+</decoder>
