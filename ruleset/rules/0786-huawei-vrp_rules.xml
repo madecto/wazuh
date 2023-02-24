@@ -1,0 +1,66 @@
+<!--
+  -  Huawei VRP rules
+  -  Author: Giulio Botto
+  -  Copyright (C)  2023, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+<!-- ID: 100200 - 100299 -->
+
+<group name="syslog,huawei_vrp,">
+  <rule id="100200" level="0">
+    <decoded_as>huawei-vrp</decoded_as>
+    <description>Grouping of Huawei VRP rules.</description>
+  </rule>
+
+  <rule id="100210" level="10">
+    <if_sid>100200</if_sid>
+    <id>/0/</id>
+    <description>Huawei VRP emergency message.</description>
+    <group>gpg13_3.2,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="100211" level="7">
+    <if_sid>100200</if_sid>
+    <id>/1/</id>
+    <description>Huawei VRP alert message.</description>
+    <group>gpg13_3.2,</group>
+  </rule>
+
+  <rule id="100212" level="5">
+    <if_sid>100200</if_sid>
+    <id>/2/</id>
+    <description>Huawei VRP critical message.</description>
+    <group>gpg13_3.2,</group>
+  </rule>
+
+  <rule id="100213" level="4">
+    <if_sid>100200</if_sid>
+    <id>/3/</id>
+    <description>Huawei VRP error message.</description>
+    <group>gpg13_3.5,</group>
+  </rule>
+
+  <rule id="100214" level="3">
+    <if_sid>100200</if_sid>
+    <id>/4/</id>
+    <description>Huawei VRP warning message.</description>
+  </rule>
+
+  <rule id="100215" level="0">
+    <if_sid>100200</if_sid>
+    <id>/5/</id>
+    <description>Huawei VRP notification message.</description>
+  </rule>
+
+  <rule id="100216" level="0">
+    <if_sid>100200</if_sid>
+    <id>/6/</id>
+    <description>Huawei VRP informational message.</description>
+  </rule>
+
+  <rule id="100217" level="0">
+    <if_sid>100200</if_sid>
+    <id>/7/</id>
+    <description>Huawei VRP debug message.</description>
+  </rule>
+</group>
