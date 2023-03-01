@@ -3,10 +3,8 @@
   -  Author: Giulio Botto
   -  Copyright (C) 2023
   -  This program is a free software; you can redistribute it and/or modify it under the terms of
-GPLv3.
-  -  References: https://datatracker.ietf.org/doc/html/rfc951
-  -              https://datatracker.ietf.org/doc/html/rfc1541
-  -              https://datatracker.ietf.org/doc/html/rfc4388
+GPLv2.
+  -  Reference: https://gitlab.isc.org/isc-projects/dhcp/-/blob/master/includes/dhcp.h
 -->
 
 <!--
@@ -40,38 +38,38 @@ via igb0.200
 via igb0.300
   - Feb 15 22:46:47 asuncion dhcpd[14872]: reuse_lease: lease age 20428 (secs) under 25% threshold,
 reply with unaltered, existing lease for 192.168.1.187
--->
-
+ -->
 <decoder name="isc-dhcpd">
-  <program_name>dhcpd</program_name>
+    <program_name>dhcpd</program_name>
 </decoder>
 
 <decoder name="isc-dhcpd-message">
-  <parent>isc-dhcpd</parent>
-  <regex type="pcre2">^(\p{Lu}+)\s+</regex>
-  <order>id</order>
+    <parent>isc-dhcpd</parent>
+    <regex type="pcre2">^(\p{Lu}+)\s+</regex>
+    <order>id</order>
 </decoder>
 
 <decoder name="isc-dhcpd-message">
-  <parent>isc-dhcpd</parent>
-  <regex type="pcre2">\s+(?:from|to)\s+(\S+)</regex>
-  <order>mac</order>
+    <parent>isc-dhcpd</parent>
+    <regex type="pcre2">\s+(?:from|to)\s+(\S+)</regex>
+    <order>mac</order>
 </decoder>
 
 <decoder name="isc-dhcpd-message">
-  <parent>isc-dhcpd</parent>
-  <regex type="pcre2">\s+(?:on|for)\s+(\S+)</regex>
-  <order>srcip</order>
+    <parent>isc-dhcpd</parent>
+    <regex type="pcre2">\s+(?:on|for)\s+(\S+)</regex>
+    <order>srcip</order>
 </decoder>
 
 <decoder name="isc-dhcpd-message">
-  <parent>isc-dhcpd</parent>
-  <regex>\s+via\s+(\S+)</regex>
-  <order>interface</order>
+    <parent>isc-dhcpd</parent>
+    <regex>\s+via\s+(\S+)</regex>
+    <order>interface</order>
 </decoder>
 
 <decoder name="isc-dhcpd-message">
-  <parent>isc-dhcpd</parent>
-  <regex>[A-Z]+:\s+.+\s+\((\S+)\)</regex>
-  <order>system_name</order>
+    <parent>isc-dhcpd</parent>
+    <regex>[A-Z]+:\s+.+\s+\((\S+)\)</regex>
+    <order>system_name</order>
 </decoder>
+  

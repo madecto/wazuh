@@ -69,7 +69,6 @@ BOOTREPLY           A BOOTP address was leased to a client.
         <group>
             dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
     </rule>
-
     <rule id="100015" level="7">
         <if_sid>100010</if_sid>
         <id>^DHCPNACK</id>
@@ -101,11 +100,12 @@ BOOTREPLY           A BOOTP address was leased to a client.
         <group>dhcp_lease_action,</group>
     </rule>
 
-
     <rule id="100019" level="3">
         <if_sid>100010</if_sid>
         <id>^BOOTREPLY</id>
         <description>ISC DHCPD: A BOOTP address was leased to a client.</description>
         <group>dhcp_lease_action,</group>
     </rule>
+
 </group>
+      

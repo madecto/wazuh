@@ -1,0 +1,56 @@
+<!-- Local Decoders -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!--
+       - Allowed static fields:
+  - location   - where the log came from (only on FTS)
+  - srcuser    - extracts the source username
+  - dstuser    - extracts the destination (target) username
+  - user       - an alias to dstuser (only one of the two can be used)
+  - srcip      - source ip
+  - dstip      - dst ip
+  - srcport    - source port
+  - dstport    - destination port
+  - protocol   - protocol
+  - id         - event id
+  - url        - url of the event
+  - action     - event action (deny, drop, accept, etc)
+  - status     - event status (success, failure, etc)
+  - extra_data - Any extra data
+-->
+
+<decoder name="docker_log_decoder">
+    <program_name>^docker</program_name>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+    <parent>docker_log_decoder</parent>
+    <regex offset="after_parent">(\d*.\d*.\d*.\d*)</regex>
+    <order>srcip</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+    <parent>docker_log_decoder</parent>
+    <regex offset="after_parent">(\d\d/\w*/\d\d\d\d)</regex>
+    <order>date</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+    <parent>docker_log_decoder</parent>
+    <regex offset="after_parent">(\d\d:\d\d:\d\d)</regex>
+    <order>time</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+    <parent>docker_log_decoder</parent>
+    <regex offset="after_parent">("\w*\s/.*\s\w*/\d\.\d")\s\d*\s\d*</regex>
+    <order>web_action</order>
+</decoder>
+
+<decoder name="docker_log_decoder_2">
+    <parent>docker_log_decoder</parent>
+    <regex offset="after_parent">\w*/\d\.\d"\s(\d\d\d)\s</regex>
+    <order>http_code</order>
+</decoder>

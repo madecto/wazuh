@@ -1,0 +1,46 @@
+<!-- Local Decoders -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!--
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy ssl_443 stopped (cumulated conns: FE: 1, BE: 0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy localhost_443 stopped (cumulated conns: FE: 1, BE:
+0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy proxy_WAN_80 stopped (cumulated conns: FE: 0, BE:
+0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy proxy_IoT_80 stopped (cumulated conns: FE: 1, BE:
+0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy proxy_LAN_80 stopped (cumulated conns: FE: 0, BE:
+0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Proxy proxy_Tor_Transport stopped (cumulated conns: FE:
+0, BE: 0).
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend loopback_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend cebolla_9001_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend assfidanken_8123_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend blackbox_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend apollo_8080_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend golgafrincham_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend marvin_3000_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend marvin_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend zaphod_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend wazuh_443_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend billionyearbunker_80_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend marvin_80_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend zaphod_80_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend golgafrincham_80_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend haproxy_csv_http_ipvANY in 0 ms.
+  - Feb 24 18:51:35 hellboy haproxy[73212]: Stopping backend cebolla_8080_ipvANY in 0 ms.
+-->
+
+<decoder name="haproxy">
+  <program_name>^haproxy</program_name>
+</decoder>
+
+<decoder name="haproxy-httplog">
+  <parent>haproxy</parent>
+  <type>web-log</type>
+  <prematch>^\S+:\S+ [\S+] \S+ \S+ \S+ \S+ </prematch>
+  <regex>^(\d+.\d+.\d+.\d+):\S+ \S+ \S+ \S+ \S+ (\d+) \.* {(\S+)\|\.* "(\S+) (\S+)</regex>
+  <order>srcip, id, dstip, protocol, url</order>
+</decoder>

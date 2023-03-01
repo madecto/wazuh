@@ -1,0 +1,69 @@
+<!--
+  - Feb 26 13:20:41 qnap qulogd[17907]: event log: Users: admin, Source IP: 192.168.1., Computer
+name: client1, Application: App Center, Category: App Installation, Content: [App Center] Installed
+SSD Profiling Tool 1.0.2246 in "/mnt/ext/opt/SSDLaboratory".
+  - Feb 26 15:23:33 qnap qulogd[6010]: conn log: Users: MicrosoftAccount\admin, Source IP:
+192.168.1.2, Computer name: hex, Connection type: SMB, Accessed resources: client1, Action: Login
+Success
+  - Feb 26 15:23:33 qnap qulogd[6010]: conn log: Users: admin, Source IP: 192.168.1., Computer name:
+hex, Connection type: SMB, Accessed resources: Multimedia/Photos/NASA/mars.tif, Action: Read
+-->
+
+<decoder name="qnap">
+    <program_name>qulogd</program_name>
+</decoder>
+
+<decoder name="qnap-event">
+    <parent>qnap</parent>
+    <regex>Application:\s(\.*),</regex>
+    <order>qnap_event_app</order>
+</decoder>
+
+<decoder name="qnap-event">
+    <parent>qnap</parent>
+    <regex>Catergory:\s(\.*),</regex>
+    <order>qnap_event_category</order>
+</decoder>
+
+<decoder name="qnap-event">
+    <parent>qnap</parent>
+    <regex>Content:\s(\.*)$</regex>
+    <order>data</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Users:\s(\.*),</regex>
+    <order>dstuser</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Computer\sname:\s(\.*),</regex>
+    <order>system_name</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Source\sIP:\s(\.*),</regex>
+    <order>srcip</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Connection\stype:\s(\.*),</regex>
+    <order>protocol</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Accessed resources:\s(\.*)/\.*,</regex>
+    <order>sharename</order>
+</decoder>
+
+<decoder name="qnap-conn">
+    <parent>qnap</parent>
+    <regex>Action:\s(\S+)$</regex>
+    <order>qnap_conn_action</order>
+</decoder>
+  

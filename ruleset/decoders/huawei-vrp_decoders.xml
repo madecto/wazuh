@@ -1,0 +1,112 @@
+<!--
+  -  Huawei Quidway VRP decoders
+  -  Created by Giulio Botto
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of
+GPLv3.
+-->
+
+<!--
+  - Group for Huawei VRP messages.
+  - Reference: https://support.huawei.com/enterprise/en/doc/EDOC1100276980/8693be18
+  -
+  - Feb 23 2023 18:09:23 quidway %%01SSH/4/SSH_FAIL(s)[5]:Failed to login through SSH.
+(IP=192.168.0.1, VpnInstanceName= , UserName=admin, Times=1, FailedReason=The user login timed out)
+  - Feb 23 2023 16:01:20 quidway %%01MSTP/4/SET_PORT_FORWARDING(l)[12]:In MSTP process 0 instance 0,
+MSTP set port GigabitEthernet0/0/10 state as forwarding.
+  - Feb 23 2023 16:01:20 quidway %%01MSTP/4/SET_PORT_LEARNING(l)[13]:In process 0 instance 0, MSTP
+set port GigabitEthernet0/0/10 state as learning.
+  - Feb 23 2023 16:01:20 quidway %%01IFPDT/4/IF_STATE(l)[14]:Interface GigabitEthernet0/0/10 has
+turned into UP state.
+  - Feb 23 2023 16:01:18 quidway %%01IFADP/4/PORTUPINFO(l)[15]:Interface GigabitEthernet0/0/10 has
+turned into UP state. (Information=Physical state: up, Negotiation: enable, Negotiation complete:
+yes, Local full-duplex(10M: yes, 100M: yes,
+ 1000M: yes), Local half-duplex(10M: yes, 100M: yes, 1000M: no), Remote full-duplex(10M: no, 100M:
+no, 1000M: no), Remote half-duplex(10M: yes, 100M: no, 1000M: no))
+  - Feb 23 2023 16:01:16 quidway %%01IFADP/4/PORTDOWNINFO(l)[16]:Interface GigabitEthernet0/0/10 has
+turned into DOWN state. (Information=Physical state: down, Negotiation: enable, Negotiation
+complete: no, Local full-duplex(10M: yes, 100M:
+ yes, 1000M: yes), Local half-duplex(10M: yes, 100M: yes, 1000M: no), Remote full-duplex(10M: no,
+100M: no, 1000M: no), Remote half-duplex(10M: no, 100M: no, 1000M: no))
+  - Feb 23 2023 10:41:47 quidway %%01NTP/4/STRATUM_CHANGE(l)[24]:System stratum changes from 16 to 3.
+(SourceAddress=192.168.0.1)
+  - Feb 23 2023 10:41:47 quidway %%01NTP/4/LEAP_CHANGE(l)[25]:System leap changes from 3 to 0 after
+clock update.
+  - Feb 23 2023 10:40:44 quidway %%01NTP/4/PEER_SELE(l)[26]:The peer selected by the system is
+192.168.0.1.
+  - Feb 23 2023 10:39:39 quidway %%01NTP/4/SOURCE_LOST(l)[27]:System synchronization source lost.
+(SourceAddress=192.168.0.1, Reason=Stratum increase detected)
+  - Feb 23 2023 03:50:15 quidway %%01MSTP/4/SET_PORT_FORWARDING(l)[28]:In MSTP process 0 instance 0,
+MSTP set port GigabitEthernet0/0/10 state as forwarding.
+  - Feb 23 2023 03:50:15 quidway %%01MSTP/4/SET_PORT_LEARNING(l)[29]:In process 0 instance 0, MSTP
+set port GigabitEthernet0/0/10 state as learning.
+  - Feb 23 2023 03:50:10 quidway %%01IFADP/4/PORTDOWNINFO(l)[32]:Interface GigabitEthernet0/0/10 has
+turned into DOWN state. (Information=Physical state: down, Negotiation: enable, Negotiation
+complete: no, Local full-duplex(10M: yes, 100M:
+ yes, 1000M: yes), Local half-duplex(10M: yes, 100M: yes, 1000M: no), Remote full-duplex(10M: no,
+100M: no, 1000M: no), Remote half-duplex(10M: no, 100M: no, 1000M: no))
+  <program_name type="pcre2">%%\d{2}[A-Z_]+/\d/[A-Z_]+\([ltds]\)</program_name>
+ -->
+
+<decoder name="huawei-vrp">
+    <prematch type="pcre2">%%\d{2}\S+/\d/\S+\([dlst]\)\[\d+\]:</prematch>
+</decoder>
+
+<decoder name="huawei-vrp">
+    <prematch type="pcre2">\S+\s+%%\d{2}\S+/\d/\S+\([dlst]\)\[\d+\]:</prematch>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">(\S+)\s+%%</regex>
+    <order>system_name</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">%%\d\d(\S+)/\d</regex>
+    <order>program_name</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">%%\d\d\S+/(\d)/\S+</regex>
+    <order>huawei_severity</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">%%\d\d\S+/\d/(\S+)\(</regex>
+    <order>huawei_brief</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">%%\d\d\S+/\d/\S+\((\p{Ll})\)</regex>
+    <order>huawei_logflag</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">%%\d{2}(\S+/\d/\S+)\(</regex>
+    <order>id</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">(?i)(?:UserName|User)=(\w+)</regex>
+    <order>srcuser</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">(?i)IP=((\d{1,3}\.?){4})</regex>
+    <order>srcip</order>
+</decoder>
+
+<decoder name="huawei-vrp-default">
+    <parent>huawei-vrp</parent>
+    <regex type="pcre2">\s+Command="(?U)(.+)"</regex>
+    <order>data</order>
+</decoder>
+  
+  
